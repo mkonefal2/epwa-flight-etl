@@ -1,0 +1,30 @@
+# Ignore data files
+data/raw/
+data/processed/
+db/*.duckdb
+
+# Ignore system files
+*.pyc
+__pycache__/
+
+# Ignore virtualenv
+venv/
+
+# Ignore Airflow logs
+airflow/logs/
+airflow/*.pid
+
+# Ignore Jupyter Notebook checkpoints
+notebooks/
+
+# Ignore test files
+tests/
+# Ignore scripts
+scripts/
+# Ignore Docker files
+docker-compose.yml
+
+# Ignore postgreSQL files
+posgres-data/
+# Ignore logs
+logs/
