@@ -2,9 +2,16 @@ import requests
 import json
 from datetime import datetime
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
 
 # === ✈️ Parametry API ===
-API_KEY = 'e631d933b8b787e286c781b9a6b951cc'
+env_path = Path(__file__).resolve().parents[1] / '.env'
+load_dotenv(dotenv_path=env_path)
+API_KEY = os.getenv("AVIATIONSTACK_API_KEY")
+if not API_KEY:
+    raise ValueError("AVIATIONSTACK_API_KEY environment variable is not set.")
 BASE_URL = 'http://api.aviationstack.com/v1/flights'
 AIRPORT_ICAO = 'EPWA'
 

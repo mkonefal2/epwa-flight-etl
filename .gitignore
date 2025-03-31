@@ -9,11 +9,12 @@ __pycache__/
 
 # Ignore virtualenv
 venv/
+.env
 
-# Ignore Airflow logs
+# Ignore Airflow 
 airflow/logs/
 airflow/*.pid
-
+airflow/airflow.db
 # Ignore Jupyter Notebook checkpoints
 notebooks/
 
@@ -23,7 +24,6 @@ tests/
 scripts/
 # Ignore Docker files
 docker-compose.yml
-
 # Ignore postgreSQL files
 posgres-data/
 # Ignore logs
