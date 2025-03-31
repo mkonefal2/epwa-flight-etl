@@ -1,6 +1,4 @@
 
-
-```markdown
 # ✈️ EPWA Daily Flights ETL Pipeline
 
 This project is an ETL pipeline that extracts, transforms, and loads data about flights related to the **Warsaw Chopin Airport (EPWA)** using the [Aviationstack API](https://aviationstack.com/). It stores and analyzes both detailed and aggregated flight traffic using **PySpark**, **DuckDB**, and **Apache Airflow**.
