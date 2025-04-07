@@ -24,6 +24,7 @@ tests/
 scripts/
 # Ignore Docker files
 docker-compose.yml
+Dockerfile
 # Ignore postgreSQL files
 posgres-data/
 # Ignore logs
