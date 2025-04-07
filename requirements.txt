@@ -1,8 +1,5 @@
+apache-airflow[all]==2.8.1
 pyspark==3.5.1
 duckdb==0.10.0
 requests==2.31.0
 pandas==2.2.1
-apache-airflow==2.8.1
-Flask-Session
-
-
