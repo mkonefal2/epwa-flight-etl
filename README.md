@@ -1,7 +1,39 @@
-
 # ✈️ EPWA Daily Flights ETL Pipeline
 
 This project is an ETL pipeline that extracts, transforms, and loads data about flights related to the **Warsaw Chopin Airport (EPWA)** using the [Aviationstack API](https://aviationstack.com/). It stores and analyzes both detailed and aggregated flight traffic using **PySpark**, **DuckDB**, and **Apache Airflow**.
+
+---
+
+## 📦 Quick Start (Automated Setup)
+
+You can set up the entire environment automatically on a fresh Ubuntu machine.
+
+### 🔧 Installation Steps
+
+1. Clone the official installer:
+   ```bash
+   git clone https://github.com/mkonefal2/airflow-flight-installer.git
+   cd airflow-flight-installer
+   ```
+
+2. Download the latest ZIP version of this repository from [Releases](https://github.com/mkonefal2/epwa-flight-etl/releases).
+
+3. Place the downloaded file (`epwa-flight-etl-main.zip`) in the same folder as `install_epwa-flight-etl.sh`.
+
+4. Run the installer:
+   ```bash
+   chmod +x install_epwa-flight-etl.sh
+   sudo ./install_epwa-flight-etl.sh
+   ```
+
+5. After a successful installation, visit:
+   ```
+   http://<your-vm-ip>:8080
+   ```
+
+   Default Airflow credentials:
+   - **Username:** `admin`
+   - **Password:** `StrongPassword123`
 
 ---
 
@@ -9,21 +41,21 @@ This project is an ETL pipeline that extracts, transforms, and loads data about 
 
 ```
 project_epwa_daily_traffic/
-├── airflow/            # Airflow DAGs and config
+├── airflow/                      # Airflow DAGs and configuration
 ├── data/
-│   ├── raw/            # Raw JSONs from API
-│   └── processed/      
-│       ├── daily_traffic/         # Aggregated CSV files (by hour)
-│       └── detailed_flights/      # Detailed flattened data
+│   ├── raw/                      # Raw JSONs from Aviationstack API
+│   └── processed/
+│       ├── daily_traffic/       # Aggregated CSVs by hour
+│       └── detailed_flights/    # Flattened detailed data
 ├── db/
-│   └── epwa_traffic.duckdb        # DuckDB local database
+│   └── epwa_traffic.duckdb      # DuckDB database
 ├── etl/
-│   ├── extract.py                 # Downloads latest data from API
-│   ├── transform_daily_traffic.py      # Aggregates traffic by hour
-│   ├── transform_detailed_scheduled_date.py # Flattens detailed flight data
-│   ├── load_epwa_daily_traffic.py         # Loads hourly data into DuckDB
-│   └── load_epwa_detailed_flights.py      # Loads detailed data into DuckDB
-└── README.md
+│   ├── extract.py
+│   ├── transform_daily_traffic.py
+│   ├── transform_detailed_scheduled_date.py
+│   ├── load_epwa_daily_traffic.py
+│   └── load_epwa_detailed_flights.py
+└── requirements.txt
 ```
 
 ---
@@ -31,50 +63,37 @@ project_epwa_daily_traffic/
 ## 🛠️ Tools Used
 
 - **Python 3.10**
-- **PySpark** – transformation and aggregation
-- **DuckDB** – fast local analytical database
-- **Apache Airflow** – task orchestration
-- **Aviationstack API** – flight data source
-
----
-
-## 🚀 Features
-
-- ✅ Extracts live departure and arrival data from EPWA
-- ✅ Aggregates traffic counts by hour and operation type
-- ✅ Extracts full flight metadata (gate, delay, terminal, etc.)
-- ✅ Loads data into DuckDB with support for deduplication and updates
-- ✅ Airflow DAG handles end-to-end orchestration
+- **PySpark** – data processing and aggregation
+- **DuckDB** – analytical database
+- **Apache Airflow** – orchestration of DAGs
+- **Aviationstack API** – source of flight data
 
 ---
 
 ## 🔐 API Key
 
-To use this project, obtain an API key from [https://aviationstack.com/](https://aviationstack.com/) and insert it into `etl/extract.py`.
+Register at [https://aviationstack.com/](https://aviationstack.com/) to get your API key.  
+Replace the placeholder in `etl/extract.py` with your key.
 
 ---
 
-## 📦 Local Execution
+## 📚 Manual Execution
 
-1. Set up Python environment and install dependencies:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
-   ```
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 
-2. Run ETL manually:
-   ```bash
-   python etl/extract.py
-   python etl/transform_daily_traffic.py
-   python etl/load_epwa_daily_traffic.py
-   ```
+python etl/extract.py
+python etl/transform_daily_traffic.py
+python etl/load_epwa_daily_traffic.py
+```
 
 ---
 
 ## 🧪 Airflow DAG
 
-The Airflow DAG `epwa_flights_pipeline` runs daily and orchestrates the following tasks:
+The DAG `epwa_flights_pipeline` runs daily and contains these tasks:
 
 - `extract_from_api`
 - `transform_daily_traffic`
@@ -82,7 +101,7 @@ The Airflow DAG `epwa_flights_pipeline` runs daily and orchestrates the followin
 - `load_daily_traffic`
 - `load_detailed_flights`
 
-To run Airflow:
+To run manually:
 ```bash
 airflow db init
 airflow scheduler
@@ -90,3 +109,8 @@ airflow webserver
 ```
 
 ---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
