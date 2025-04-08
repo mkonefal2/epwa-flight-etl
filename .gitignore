@@ -1,7 +1,9 @@
 # Ignore data files
 data/raw/
 data/processed/
-db/*.duckdb
+# Ignoruj pliki DuckDB, ale pozwól na sam folder db
+*.duckdb
+!db/
 
 # Ignore system files
 *.pyc
