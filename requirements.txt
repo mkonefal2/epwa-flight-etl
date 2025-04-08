@@ -3,5 +3,5 @@ duckdb==0.10.0
 requests==2.31.0
 pandas==2.2.1
 apache-airflow==2.8.1
-apache-airflow-providers-fab==1.0.1
+apache-airflow-providers-fab==1.0.0
 Flask-Session>=0.4.0
