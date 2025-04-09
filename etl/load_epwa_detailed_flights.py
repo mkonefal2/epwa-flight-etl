@@ -16,12 +16,14 @@ conn.execute("""
         flight_date DATE,
         flight_status VARCHAR,
         dep_airport VARCHAR,
+        dep_iata VARCHAR,
         dep_scheduled TIMESTAMP,
         dep_actual TIMESTAMP,
         dep_terminal VARCHAR,
         dep_gate VARCHAR,
         dep_delay INTEGER,
         arr_airport VARCHAR,
+        arr_iata VARCHAR,
         arr_scheduled TIMESTAMP,
         arr_actual TIMESTAMP,
         arr_terminal VARCHAR,
@@ -31,27 +33,35 @@ conn.execute("""
         flight_number VARCHAR NOT NULL,
         operation_type VARCHAR NOT NULL,
         scheduled_datetime TIMESTAMP NOT NULL,
+        arrival_country VARCHAR,
         PRIMARY KEY (scheduled_datetime, flight_number, operation_type)
     )
 """)
 
-# 📥 Load data from CSV files
+# 📅 Load data from CSV files
 for dir_path in csv_dirs:
     csv_files = glob.glob(f"{dir_path}/*.csv")
     for file in csv_files:
-        print(f"📥 Loading file: {file}")
+        print(f"📅 Loading file: {file}")
         conn.execute(f"""
-            INSERT INTO epwa_detailed_flights
+            INSERT INTO epwa_detailed_flights (
+                flight_date, flight_status, dep_airport, dep_iata,
+                dep_scheduled, dep_actual, dep_terminal, dep_gate, dep_delay,
+                arr_airport, arr_iata, arr_scheduled, arr_actual, arr_terminal, arr_gate, arr_delay,
+                airline_name, flight_number, operation_type, scheduled_datetime
+            )
             SELECT
                 CAST(flight_date AS DATE),
                 flight_status,
                 dep_airport,
+                dep_iata,
                 CAST(dep_scheduled AS TIMESTAMP),
                 CAST(dep_actual AS TIMESTAMP),
                 dep_terminal,
                 dep_gate,
                 CAST(dep_delay AS INTEGER),
                 arr_airport,
+                arr_iata,
                 CAST(arr_scheduled AS TIMESTAMP),
                 CAST(arr_actual AS TIMESTAMP),
                 arr_terminal,
@@ -67,12 +77,14 @@ for dir_path in csv_dirs:
                 flight_date=EXCLUDED.flight_date,
                 flight_status=EXCLUDED.flight_status,
                 dep_airport=EXCLUDED.dep_airport,
+                dep_iata=EXCLUDED.dep_iata,
                 dep_scheduled=EXCLUDED.dep_scheduled,
                 dep_actual=EXCLUDED.dep_actual,
                 dep_terminal=EXCLUDED.dep_terminal,
                 dep_gate=EXCLUDED.dep_gate,
                 dep_delay=EXCLUDED.dep_delay,
                 arr_airport=EXCLUDED.arr_airport,
+                arr_iata=EXCLUDED.arr_iata,
                 arr_scheduled=EXCLUDED.arr_scheduled,
                 arr_actual=EXCLUDED.arr_actual,
                 arr_terminal=EXCLUDED.arr_terminal,

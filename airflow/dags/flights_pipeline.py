@@ -3,12 +3,12 @@ from airflow.operators.bash import BashOperator
 from datetime import datetime, timedelta
 from pathlib import Path
 
-# 📌 Wyliczanie ścieżek
+# 📌 Calculating paths
 dag_dir = Path(__file__).resolve().parent
 project_root = dag_dir.parent.parent
 etl_dir = project_root / "etl"
 
-# ⚙️ Parametry DAG-a
+# ⚙️ DAG parameters
 default_args = {
     "owner": "data-engineer",
     "start_date": datetime(2024, 3, 28),
@@ -50,6 +50,11 @@ with DAG(
         bash_command=f"cd {etl_dir} && source ../venv/bin/activate && python load_epwa_detailed_flights.py",
     )
 
+    enrich_arrival_country = BashOperator(
+        task_id="enrich_arrival_country",
+        bash_command=f"cd {etl_dir} && source ../venv/bin/activate && python enrich_ewpa_country_detailed_flights.py",
+    )
+
     extract_task >> [transform_daily_traffic, transform_detailed_flights]
     transform_daily_traffic >> load_daily_traffic
-    transform_detailed_flights >> load_detailed_flights
+    transform_detailed_flights >> load_detailed_flights >> enrich_arrival_country
