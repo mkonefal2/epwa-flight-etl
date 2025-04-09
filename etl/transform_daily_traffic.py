@@ -3,7 +3,7 @@ from pyspark.sql.functions import col, to_date, hour, lit
 from pathlib import Path
 from datetime import datetime
 
-# Inicjalizacja sesji Spark
+# Initialize Spark session
 spark = SparkSession.builder.appName("FlightDataDaily").getOrCreate()
 
 project_root = Path(__file__).resolve().parents[1]
@@ -18,14 +18,14 @@ arr_file = raw_dir / f"flights_arr_{today_str}.json"
 def process_file(path, operation_type):
     df_raw = spark.read.option("multiline", "true").json(str(path))
 
-    # Rozwinięcie kolumny data i wybór właściwej kolumny scheduled
+    # Expand the 'data' column and select the appropriate 'scheduled' column
     df = df_raw.selectExpr("explode(data) as flight_data") \
         .select(
             to_date(col(f"flight_data.{operation_type}.scheduled")).alias("date"),
             hour(col(f"flight_data.{operation_type}.scheduled")).alias("hour")
         )
 
-    # Agregacja liczby lotów na godzinę
+    # Aggregate the number of flights per hour
     df_agg = df.groupBy("date", "hour") \
                .count() \
                .withColumnRenamed("count", "flights_count") \
@@ -33,15 +33,15 @@ def process_file(path, operation_type):
 
     return df_agg
 
-# Przetwarzanie plików
+# Process files
 dep_df = process_file(dep_file, "departure")
 arr_df = process_file(arr_file, "arrival")
 
-# Łączenie wyników
+# Combine results
 final_df = dep_df.union(arr_df)
 
-# Zapis do CSV
-output_path = str(daily_dir/ f"daily_traffic_{today_str}_csv")
+# Save to CSV
+output_path = str(daily_dir / f"daily_traffic_{today_str}_csv")
 final_df.coalesce(1).write.mode('overwrite').csv(output_path, header=True)
 
 spark.stop()

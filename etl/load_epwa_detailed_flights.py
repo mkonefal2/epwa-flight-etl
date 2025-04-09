@@ -2,15 +2,15 @@ import duckdb
 import glob
 from pathlib import Path
 
-# 🔗 Ścieżki
+# 🔗 Paths
 project_root = Path(__file__).resolve().parents[1]
 db_path = project_root / 'db' / 'epwa_traffic.duckdb'
 csv_dirs = glob.glob(str(project_root / 'data' / 'processed' / 'detailed_flights' / 'details_*_csv'))
 
-# 🔌 Połączenie z DuckDB
+# 🔌 Connection to DuckDB
 conn = duckdb.connect(str(db_path))
 
-# 🧱 Tworzenie tabeli, jeśli nie istnieje
+# 🧱 Create table if it does not exist
 conn.execute("""
     CREATE TABLE IF NOT EXISTS epwa_detailed_flights (
         flight_date DATE,
@@ -35,11 +35,11 @@ conn.execute("""
     )
 """)
 
-# 📥 Załaduj dane z plików CSV
+# 📥 Load data from CSV files
 for dir_path in csv_dirs:
     csv_files = glob.glob(f"{dir_path}/*.csv")
     for file in csv_files:
-        print(f"📥 Ładowanie pliku: {file}")
+        print(f"📥 Loading file: {file}")
         conn.execute(f"""
             INSERT INTO epwa_detailed_flights
             SELECT
@@ -81,5 +81,5 @@ for dir_path in csv_dirs:
                 airline_name=EXCLUDED.airline_name
         """)
 
-print("✅ Załadowano dane do epwa_detailed_flights.")
+print("✅ Data loaded into epwa_detailed_flights.")
 conn.close()

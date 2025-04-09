@@ -3,7 +3,7 @@ from pyspark.sql.functions import col, to_date, lit
 from pathlib import Path
 from datetime import datetime
 
-# Inicjalizacja sesji Spark
+# Initialize Spark session
 spark = SparkSession.builder.appName("FlightDataDetails").getOrCreate()
 
 project_root = Path(__file__).resolve().parents[1]
