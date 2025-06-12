@@ -31,6 +31,12 @@ You can set up the entire environment automatically on a fresh Ubuntu machine.
    - **Username:** `admin`
    - **Password:** `StrongPassword123`
 
+   If the page does not load, run the health check:
+   ```bash
+   ./check_airflow.sh <your-vm-ip>
+   ```
+   This script verifies the Airflow webserver is running and reachable.
+
 ---
 
 ## 📁 Project Structure
