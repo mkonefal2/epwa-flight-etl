@@ -137,6 +137,13 @@ the script explains how to fix the issue before re-running.
 
 You can add this script to a cron job or run it manually whenever you want to ensure you have the latest version.
 
+To update only the DAG definitions without touching other files, run:
+
+```bash
+./scripts/update_dags.sh
+```
+This pulls the latest code and reloads the Airflow scheduler so new DAGs are picked up.
+
 ---
 
 ## 📄 License

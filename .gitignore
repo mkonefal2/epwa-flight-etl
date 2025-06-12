@@ -24,6 +24,8 @@ notebooks/
 tests/
 # Ignore scripts
 scripts/
+!scripts/
+!scripts/update_dags.sh
 # Ignore Docker files
 docker-compose.yml
 Dockerfile
