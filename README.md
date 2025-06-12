@@ -40,7 +40,7 @@ You can set up the entire environment automatically on a fresh Ubuntu machine.
 ## 📁 Project Structure
 
 ```
-project_epwa_daily_traffic/
+epwa-flight-etl/
 ├── airflow/                      # Airflow DAGs and configuration
 ├── data/
 │   ├── raw/                      # Raw JSONs from Aviationstack API
