@@ -1,5 +1,5 @@
 from airflow import DAG
-from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -25,14 +25,15 @@ with DAG(
     tags=["epwa", "manual", "transform", "load"],
 ) as dag:
 
-    transform_task = BashOperator(
+    transform_task = PythonOperator(
         task_id="transform_detailed_flights",
-        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python transform_detailed_scheduled_date.py",
+        python_callable=lambda: __import__("etl.transform_detailed_scheduled_date").transform_detailed_scheduled_date.main(),
     )
 
-    load_task = BashOperator(
+    load_task = PythonOperator(
         task_id="load_detailed_flights",
-        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python load_epwa_detailed_flights.py",
+        python_callable=lambda: __import__("etl.load_epwa_detailed_flights").load_epwa_detailed_flights.main(),
     )
 
     transform_task >> load_task
+

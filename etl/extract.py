@@ -34,19 +34,24 @@ def fetch_data(flight_direction):
     response.raise_for_status()
     return response.json()
 
-# === 📦 Fetching and Saving ===
-try:
-    arr_data = fetch_data('arrival')
-    dep_data = fetch_data('departure')
+def main():
+    """Fetch today's arrival and departure data and save it as JSON."""
+    try:
+        arr_data = fetch_data("arrival")
+        dep_data = fetch_data("departure")
 
-    with open(arr_file, 'w') as f:
-        json.dump(arr_data, f)
+        with open(arr_file, "w") as f:
+            json.dump(arr_data, f)
 
-    with open(dep_file, 'w') as f:
-        json.dump(dep_data, f)
+        with open(dep_file, "w") as f:
+            json.dump(dep_data, f)
 
-    print(f"[✔] Saved files: {arr_file.name}, {dep_file.name}")
+        print(f"[✔] Saved files: {arr_file.name}, {dep_file.name}")
 
-except Exception as e:
-    print(f"[✖] Error while fetching data: {e}")
-    raise
+    except Exception as e:
+        print(f"[✖] Error while fetching data: {e}")
+        raise
+
+
+if __name__ == "__main__":
+    main()

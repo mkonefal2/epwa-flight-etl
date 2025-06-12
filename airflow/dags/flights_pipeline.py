@@ -1,5 +1,5 @@
 from airflow import DAG
-from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -25,36 +25,37 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    extract_task = BashOperator(
+    extract_task = PythonOperator(
         task_id="extract_from_api",
-        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python extract.py",
+        python_callable=lambda: __import__("etl.extract").extract.main(),
     )
 
-    transform_daily_traffic = BashOperator(
+    transform_daily_traffic = PythonOperator(
         task_id="transform_daily_traffic",
-        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python transform_daily_traffic.py",
+        python_callable=lambda: __import__("etl.transform_daily_traffic").transform_daily_traffic.main(),
     )
 
-    transform_detailed_flights = BashOperator(
+    transform_detailed_flights = PythonOperator(
         task_id="transform_detailed_flights",
-        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python transform_detailed_scheduled_date.py",
+        python_callable=lambda: __import__("etl.transform_detailed_scheduled_date").transform_detailed_scheduled_date.main(),
     )
 
-    load_daily_traffic = BashOperator(
+    load_daily_traffic = PythonOperator(
         task_id="load_daily_traffic",
-        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python load_epwa_daily_traffic.py",
+        python_callable=lambda: __import__("etl.load_epwa_daily_traffic").load_epwa_daily_traffic.main(),
     )
 
-    load_detailed_flights = BashOperator(
+    load_detailed_flights = PythonOperator(
         task_id="load_detailed_flights",
-        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python load_epwa_detailed_flights.py",
+        python_callable=lambda: __import__("etl.load_epwa_detailed_flights").load_epwa_detailed_flights.main(),
     )
 
-    enrich_arrival_country = BashOperator(
+    enrich_arrival_country = PythonOperator(
         task_id="enrich_arrival_country",
-        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python enrich_epwa_country_detailed_flights.py",
+        python_callable=lambda: __import__("etl.enrich_epwa_country_detailed_flights").enrich_epwa_country_detailed_flights.main(),
     )
 
     extract_task >> [transform_daily_traffic, transform_detailed_flights]
     transform_daily_traffic >> load_daily_traffic
     transform_detailed_flights >> load_detailed_flights >> enrich_arrival_country
+
