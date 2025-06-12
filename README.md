@@ -39,6 +39,11 @@ You can set up the entire environment automatically on a fresh Ubuntu machine.
    ```
    This script verifies the Airflow webserver is running and reachable.
 
+   To restart the webserver, run:
+   ```bash
+   ./restart_webserver.sh
+   ```
+
 ---
 
 ## 📁 Project Structure
