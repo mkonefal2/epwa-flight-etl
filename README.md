@@ -21,8 +21,9 @@ You can set up the entire environment automatically on a fresh Ubuntu machine.
    chmod +x install_and_start.sh
    sudo ./install_and_start.sh
    ```
-   The script detects any previous installation in `/home/airflow/epwa-flight-etl`
-   and offers to remove it for a clean reinstall.
+   The script installs the project into `/home/airflow/epwa-flight-etl`, ensuring
+   ownership by the `airflow` user. If an installation already exists there, it
+   offers to remove it for a clean reinstall.
 
 3. After the script finishes, open:
    ```
@@ -43,6 +44,9 @@ You can set up the entire environment automatically on a fresh Ubuntu machine.
    ```bash
    ./restart_webserver.sh
    ```
+   The script assumes the project resides in `/home/airflow/epwa-flight-etl`
+   and starts the webserver on port `8080` in the background, writing logs to
+   `airflow/webserver.log`.
 
 ---
 
