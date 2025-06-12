@@ -15,3 +15,5 @@ try:
 except Exception as e:
     print(f"❌ Error while dropping the table: {e}")
     raise
+finally:
+    conn.close()
