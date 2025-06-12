@@ -66,6 +66,21 @@ sudo -u airflow bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && nohup $REPO_DIR/ve
 
 sudo -u airflow bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && nohup $REPO_DIR/venv/bin/airflow webserver --port 8080 --debug > $AIRFLOW_HOME/webserver.log 2>&1 &"
 
+echo "Waiting for Airflow webserver to respond on http://localhost:8080 ..."
+for i in {1..15}; do
+    if curl -fs http://localhost:8080 >/dev/null 2>&1; then
+        echo "Airflow webserver is up."
+        break
+    fi
+    sleep 2
+done
+
+if ! curl -fs http://localhost:8080 >/dev/null 2>&1; then
+    echo "Airflow webserver did not start correctly." >&2
+    echo "Check $AIRFLOW_HOME/webserver.log for details." >&2
+    exit 1
+fi
+
 cat <<EOM
 Airflow is running in the background.
 Access the UI at http://<your-vm-ip>:8080
