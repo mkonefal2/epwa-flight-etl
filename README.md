@@ -10,23 +10,19 @@ You can set up the entire environment automatically on a fresh Ubuntu machine.
 
 ### 🔧 Installation Steps
 
-1. Clone the official installer:
+1. Clone this repository:
    ```bash
-   git clone https://github.com/mkonefal2/airflow-flight-installer.git
-   cd airflow-flight-installer
+   git clone https://github.com/mkonefal2/epwa-flight-etl.git
+   cd epwa-flight-etl
    ```
 
-2. Download the latest ZIP version of this repository from [Releases](https://github.com/mkonefal2/epwa-flight-etl/releases).
-
-3. Place the downloaded file (`epwa-flight-etl-main.zip`) in the same folder as `install_epwa-flight-etl.sh`.
-
-4. Run the installer:
+2. Run the included installer (requires sudo):
    ```bash
-   chmod +x install_epwa-flight-etl.sh
-   sudo ./install_epwa-flight-etl.sh
+   chmod +x install_and_start.sh
+   sudo ./install_and_start.sh
    ```
 
-5. After a successful installation, visit:
+3. After the script finishes, open:
    ```
    http://<your-vm-ip>:8080
    ```
