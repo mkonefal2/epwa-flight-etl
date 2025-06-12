@@ -21,6 +21,8 @@ You can set up the entire environment automatically on a fresh Ubuntu machine.
    chmod +x install_and_start.sh
    sudo ./install_and_start.sh
    ```
+   The script detects any previous installation in `/home/airflow/epwa-flight-etl`
+   and offers to remove it for a clean reinstall.
 
 3. After the script finishes, open:
    ```
