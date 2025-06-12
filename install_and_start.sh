@@ -21,6 +21,11 @@ if [ -d "$REPO_DIR" ]; then
         echo "Stopping running Airflow processes (if any)..."
         pkill -u airflow -f "airflow scheduler" >/dev/null 2>&1 || true
         pkill -u airflow -f "airflow webserver" >/dev/null 2>&1 || true
+        # Ensure we're not deleting the directory we are running from
+        # which would cause the script to fail midway.
+        case "$PWD" in
+            "$REPO_DIR"* ) cd /tmp ;;
+        esac
         rm -rf "$REPO_DIR"
     else
         echo "Installation aborted."
