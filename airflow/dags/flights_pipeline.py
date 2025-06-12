@@ -27,32 +27,32 @@ with DAG(
 
     extract_task = BashOperator(
         task_id="extract_from_api",
-        bash_command=f"cd {etl_dir} && source ../venv/bin/activate && python extract.py",
+        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python extract.py",
     )
 
     transform_daily_traffic = BashOperator(
         task_id="transform_daily_traffic",
-        bash_command=f"cd {etl_dir} && source ../venv/bin/activate && python transform_daily_traffic.py",
+        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python transform_daily_traffic.py",
     )
 
     transform_detailed_flights = BashOperator(
         task_id="transform_detailed_flights",
-        bash_command=f"cd {etl_dir} && source ../venv/bin/activate && python transform_detailed_scheduled_date.py",
+        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python transform_detailed_scheduled_date.py",
     )
 
     load_daily_traffic = BashOperator(
         task_id="load_daily_traffic",
-        bash_command=f"cd {etl_dir} && source ../venv/bin/activate && python load_epwa_daily_traffic.py",
+        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python load_epwa_daily_traffic.py",
     )
 
     load_detailed_flights = BashOperator(
         task_id="load_detailed_flights",
-        bash_command=f"cd {etl_dir} && source ../venv/bin/activate && python load_epwa_detailed_flights.py",
+        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python load_epwa_detailed_flights.py",
     )
 
     enrich_arrival_country = BashOperator(
         task_id="enrich_arrival_country",
-        bash_command=f"cd {etl_dir} && source ../venv/bin/activate && python enrich_epwa_country_detailed_flights.py",
+        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python enrich_epwa_country_detailed_flights.py",
     )
 
     extract_task >> [transform_daily_traffic, transform_detailed_flights]

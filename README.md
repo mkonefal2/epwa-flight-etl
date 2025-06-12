@@ -94,7 +94,7 @@ Replace the placeholder in `etl/extract.py` with your key.
 
 ```bash
 python -m venv venv
-source venv/bin/activate
+. venv/bin/activate
 pip install -r requirements.txt
 
 python etl/extract.py

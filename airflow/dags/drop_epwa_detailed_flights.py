@@ -27,5 +27,5 @@ with DAG(
 
     drop_task = BashOperator(
         task_id="drop_epwa_detailed_flights_table",
-        bash_command=f"cd {etl_dir} && source ../venv/bin/activate && python drop_epwa_detailed_flights.py",    
+        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python drop_epwa_detailed_flights.py",
     )

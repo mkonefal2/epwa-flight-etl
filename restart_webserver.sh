@@ -24,10 +24,10 @@ ensure_permissions() {
 start_webserver() {
     echo "Starting Airflow webserver..."
     if [ "$(id -u)" -eq 0 ]; then
-        sudo -u "$AIRFLOW_USER" bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && nohup $AIRFLOW_CMD webserver -p 8080 > $LOG_FILE 2>&1 &"
+        sudo -u "$AIRFLOW_USER" bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && nohup $AIRFLOW_CMD webserver --port 8080 --debug > $LOG_FILE 2>&1 &"
     else
         export AIRFLOW_HOME="$AIRFLOW_HOME"
-        nohup "$AIRFLOW_CMD" webserver -p 8080 > "$LOG_FILE" 2>&1 &
+        nohup "$AIRFLOW_CMD" webserver --port 8080 --debug > "$LOG_FILE" 2>&1 &
     fi
 }
 

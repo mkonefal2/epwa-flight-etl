@@ -27,12 +27,12 @@ with DAG(
 
     transform_task = BashOperator(
         task_id="transform_detailed_flights",
-        bash_command=f"cd {etl_dir} && source ../venv/bin/activate && python transform_detailed_scheduled_date.py",
+        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python transform_detailed_scheduled_date.py",
     )
 
     load_task = BashOperator(
         task_id="load_detailed_flights",
-        bash_command=f"cd {etl_dir} && source ../venv/bin/activate && python load_epwa_detailed_flights.py",
+        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python load_epwa_detailed_flights.py",
     )
 
     transform_task >> load_task

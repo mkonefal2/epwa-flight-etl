@@ -27,5 +27,5 @@ with DAG(
 
     backup_task = BashOperator(
         task_id="backup_epwa_detailed_flights",
-        bash_command=f"cd {etl_dir} && source ../venv/bin/activate && python backup_epwa_detailed_flights.py",  
+        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python backup_epwa_detailed_flights.py",
     )
