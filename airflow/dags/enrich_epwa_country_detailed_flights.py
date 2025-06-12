@@ -27,5 +27,5 @@ with DAG(
 
     enrich_arrival_country = BashOperator(
         task_id="enrich_arrival_country",
-        bash_command=f"cd {etl_dir} && source ../venv/bin/activate && python enrich_ewpa_country_detailed_flights.py",
+        bash_command=f"cd {etl_dir} && source ../venv/bin/activate && python enrich_epwa_country_detailed_flights.py",
     )
