@@ -1,5 +1,5 @@
 from airflow import DAG
-from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -25,7 +25,8 @@ with DAG(
     tags=["epwa", "enrichment"],
 ) as dag:
 
-    enrich_arrival_country = BashOperator(
+    enrich_arrival_country = PythonOperator(
         task_id="enrich_arrival_country",
-        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python enrich_epwa_country_detailed_flights.py",
+        python_callable=lambda: __import__("etl.enrich_epwa_country_detailed_flights").enrich_epwa_country_detailed_flights.main(),
     )
+

@@ -1,5 +1,5 @@
 from airflow import DAG
-from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -25,7 +25,8 @@ with DAG(
     tags=["epwa", "backup"],
 ) as dag:
 
-    backup_task = BashOperator(
+    backup_task = PythonOperator(
         task_id="backup_epwa_detailed_flights",
-        bash_command=f"cd {etl_dir} && . ../venv/bin/activate && python backup_epwa_detailed_flights.py",
+        python_callable=lambda: __import__("etl.backup_epwa_detailed_flights").backup_epwa_detailed_flights.main(),
     )
+
