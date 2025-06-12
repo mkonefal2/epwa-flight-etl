@@ -52,13 +52,19 @@ fi
 
 export AIRFLOW_HOME="$REPO_DIR/airflow"
 
+# persist AIRFLOW_HOME for the airflow user
+if [ -f /home/airflow/.bashrc ] && ! grep -q "AIRFLOW_HOME" /home/airflow/.bashrc; then
+    echo "export AIRFLOW_HOME=$AIRFLOW_HOME" >> /home/airflow/.bashrc
+    chown airflow:airflow /home/airflow/.bashrc
+fi
+
 sudo -u airflow bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && $REPO_DIR/venv/bin/airflow db init"
 
 sudo -u airflow bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && $REPO_DIR/venv/bin/airflow users create --username admin --password StrongPassword123 --firstname Admin --lastname User --role Admin --email admin@example.com || true"
 
 sudo -u airflow bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && nohup $REPO_DIR/venv/bin/airflow scheduler > $AIRFLOW_HOME/scheduler.log 2>&1 &"
 
-sudo -u airflow bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && nohup $REPO_DIR/venv/bin/airflow webserver -p 8080 > $AIRFLOW_HOME/webserver.log 2>&1 &"
+sudo -u airflow bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && nohup $REPO_DIR/venv/bin/airflow webserver --port 8080 --debug > $AIRFLOW_HOME/webserver.log 2>&1 &"
 
 cat <<EOM
 Airflow is running in the background.
