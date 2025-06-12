@@ -67,9 +67,46 @@ sudo -u airflow bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && $REPO_DIR/venv/bin
 
 sudo -u airflow bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && $REPO_DIR/venv/bin/airflow users create --username admin --password StrongPassword123 --firstname Admin --lastname User --role Admin --email admin@example.com || true"
 
-sudo -u airflow bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && nohup $REPO_DIR/venv/bin/airflow scheduler > $AIRFLOW_HOME/scheduler.log 2>&1 &"
+if command -v systemctl >/dev/null 2>&1; then
+    cat >/etc/systemd/system/airflow-scheduler.service <<EOF
+[Unit]
+Description=Airflow Scheduler
+After=network.target
 
-sudo -u airflow bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && nohup $REPO_DIR/venv/bin/airflow webserver --port 8080 --debug > $AIRFLOW_HOME/webserver.log 2>&1 &"
+[Service]
+User=airflow
+Environment=AIRFLOW_HOME=$AIRFLOW_HOME
+ExecStart=$REPO_DIR/venv/bin/airflow scheduler
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    cat >/etc/systemd/system/airflow-webserver.service <<EOF
+[Unit]
+Description=Airflow Webserver
+After=network.target
+
+[Service]
+User=airflow
+Environment=AIRFLOW_HOME=$AIRFLOW_HOME
+ExecStart=$REPO_DIR/venv/bin/airflow webserver --port 8080 --debug
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    systemctl daemon-reload
+    systemctl enable --now airflow-scheduler.service
+    systemctl enable --now airflow-webserver.service
+else
+    sudo -u airflow bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && nohup $REPO_DIR/venv/bin/airflow scheduler > $AIRFLOW_HOME/scheduler.log 2>&1 &"
+    sudo -u airflow bash -c "export AIRFLOW_HOME=$AIRFLOW_HOME && nohup $REPO_DIR/venv/bin/airflow webserver --port 8080 --debug > $AIRFLOW_HOME/webserver.log 2>&1 &"
+fi
 
 echo "Waiting for Airflow webserver to respond on http://localhost:8080 ..."
 for i in {1..15}; do

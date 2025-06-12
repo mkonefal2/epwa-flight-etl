@@ -40,13 +40,12 @@ You can set up the entire environment automatically on a fresh Ubuntu machine.
    ```
    This script verifies the Airflow webserver is running and reachable.
 
-   To restart the webserver, run:
+   The installer configures the scheduler and webserver as systemd services.
+   To restart them, run:
    ```bash
-   ./restart_webserver.sh
+   sudo systemctl restart airflow-webserver
+   sudo systemctl restart airflow-scheduler
    ```
-   The script assumes the project resides in `/home/airflow/epwa-flight-etl`
-   and starts the webserver on port `8080` in the background, writing logs to
-   `airflow/webserver.log`.
 
 ---
 
