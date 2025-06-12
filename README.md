@@ -121,6 +121,9 @@ Use the `update_project.sh` script to keep your local repository in sync with Gi
 ./update_project.sh
 ```
 
+If the update cannot proceed (e.g., due to uncommitted changes or a missing remote),
+the script explains how to fix the issue before re-running.
+
 You can add this script to a cron job or run it manually whenever you want to ensure you have the latest version.
 
 ---
