@@ -104,6 +104,19 @@ airflow scheduler
 airflow webserver
 ```
 
+
+---
+
+## \ud83d\udc04 Updating the Project
+
+Use the `update_project.sh` script to keep your local repository in sync with GitHub. The script checks for new commits on the tracked remote branch and pulls them if available.
+
+```bash
+./update_project.sh
+```
+
+You can add this script to a cron job or run it manually whenever you want to ensure you have the latest version.
+
 ---
 
 ## 📄 License
