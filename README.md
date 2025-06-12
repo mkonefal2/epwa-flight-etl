@@ -10,13 +10,13 @@ You can set up the entire environment automatically on a fresh Ubuntu machine.
 
 ### 🔧 Installation Steps
 
-1. Clone this repository:
+1. Clone this repository (the installer script is included):
    ```bash
    git clone https://github.com/mkonefal2/epwa-flight-etl.git
    cd epwa-flight-etl
    ```
 
-2. Run the included installer (requires sudo):
+2. Run the installer (requires sudo):
    ```bash
    chmod +x install_and_start.sh
    sudo ./install_and_start.sh
